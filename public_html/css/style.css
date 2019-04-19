@@ -32,3 +32,9 @@ form select {
     display: inline-block;
     margin-left: 5px;
 }
+
+.wall {
+    position: relative;
+    width: 500px;
+    height: 500px;
+}
