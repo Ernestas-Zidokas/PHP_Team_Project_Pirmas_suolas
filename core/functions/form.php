@@ -26,20 +26,6 @@ function get_safe_input($form) {
  */
 function validate_form($safe_input, &$form) {
     $success = true;
-    $form['validate'] = $form['validate'] ?? [];
-
-    foreach ($form['pre_validate'] as $pre_validator) {
-        if (is_callable($pre_validator)) {
-            if (!$pre_validator($safe_input, $form)) {
-                $success = false;
-                break;
-            }
-        } else {
-            throw new Exception(strtr('Not callable @validator function', [
-                '@validator' => $validator
-            ]));
-        }
-    }
     if ($success) {
         foreach ($form['fields'] as $field_id => &$field) {
             foreach ($field['validate'] as $validator) {

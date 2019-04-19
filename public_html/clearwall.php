@@ -1,5 +1,6 @@
 <?php
 require_once '../bootloader.php';
+
 $form = [
     'fields' => [],
     'buttons' => [
@@ -17,8 +18,13 @@ $form = [
 if (!empty($_POST)) {
     $safe_input = get_safe_input($form);
     $form_success = validate_form($safe_input, $form);
+
     if ($form_success) {
-        //pabaigti
+        $connection = new Core\Database\Connection(DB_CREDENTIALS);
+        $pdo = $connection->getPDO();
+        $model_pixel = new \App\PoopWall\Model\ModelPixel($connection, DB_TABLE);
+        $model_pixel->deleteAll();
+
         $success_msg = 'PIXELIAI istrinti';
     }
 }
@@ -30,12 +36,10 @@ if (!empty($_POST)) {
     </head>
     <body>
         <?php require 'objects/navigation.php'; ?>
-        <div>
-            <h1>Clear PoopWall</h1>
-            <div class="forma"><?php require '../core/views/form.php'; ?></div>
-            <?php if (isset($success_msg)): ?>
-                <h2><?php print $success_msg; ?></h2>
-            <?php endif; ?>
-        </div>
+        <h1>Clear PoopWall</h1>
+        <div class="forma"><?php require '../core/views/form.php'; ?></div>
+        <?php if (isset($success_msg)): ?>
+            <h2><?php print $success_msg; ?></h2>
+        <?php endif; ?>
     </body>
 </html>

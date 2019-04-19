@@ -24,17 +24,20 @@ form select {
     margin-right: auto;
 }
 
-.author {
-    display: none;
-}
-
-.line:hover .author {
-    display: inline-block;
-    margin-left: 5px;
-}
-
 .wall {
     position: relative;
     width: 500px;
     height: 500px;
+    background-color: blanchedalmond;
+}
+
+.pixel {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+}
+
+.nav ul li a {
+    text-decoration: none;
+    
 }
