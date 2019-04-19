@@ -5,76 +5,61 @@ namespace App\Model;
 class ModelPixel {
 
     protected $table_name;
-    
+
     /** @var \Core\FileDB */
-    protected $db;
+    protected $connection;
+    protected $pdo;
 
-    public function __construct(\Core\FileDB $db, $table_name) {
+    public function __construct(\Core\Database\Connection $connection, $table_name) {
         $this->table_name = $table_name;
-        $this->db = $db;
+        $this->connection = $connection;
+        $this->pdo = $this->connection->getPDO();
     }
 
-    public function load($email) {
-        $data_row = $this->db->getRow($this->table_name, $email);
-        if ($data_row) {
-            return new \Core\User\User($data_row);
+    public function insert(\App\PoopWall\Pixel $pixel) {
+        $columns = array_keys($pixel->getData());
+
+        $sql = strtr("INSERT INTO @db.@table (@col) VALUES (@val)", [
+            '@db' => SQLBuilder::column(DB_SCHEMA),
+            '@table' => SQLBuilder::column(DB_TABLE),
+            '@col' => SQLBuilder::columns($columns),
+            '@val' => SQLBuilder::binds($columns)
+        ]);
+
+        $query = $this->pdo->prepare($sql);
+
+        foreach ($pixel->getData() as $key => $value) {
+            $query->bindValue(SQLBuilder::bind($key), $value);
         }
-    }
 
-    public function insert(\Core\User\User $user) {
-        if (!$this->exists($user)) {
-            $this->db->setRow($this->table_name, $user->getEmail(), $user->getData());
-            $this->db->save();
-
-            return true;
-        }
-    }
-
-    public function update(\Core\User\User $user) {
-        if ($this->exists($user)) {
-            $this->db->setRow($this->table_name, $user->getEmail(), $user->getData());
-            $this->db->save();
-
-            return true;
-        }
-    }
-
-    public function delete(\Core\User\User $user) {
-        if ($this->exists($user)) {
-            $this->db->deleteRow($this->table_name, $user->getEmail());
-            $this->db->save();
-
-            return true;
-        }
+        $query->execute();
     }
 
     public function loadAll() {
-        $user_masyvas = [];
-        foreach ($this->db->getRows($this->table_name) as $user) {
-            $user_masyvas[] = new \Core\User\User($user);
+        $loadAll = strtr('SELECT * FROM @db.@table', [
+            '@db' => \Core\Database\SQLBuilder::column(DB_SCHEMA),
+            '@table' => \Core\Database\SQLBuilder::column(DB_TABLE)
+        ]);
+
+        $query = $this->pdo->query($loadAll);
+        $pixel_data = $query->fetchAll(\PDO::FETCH_ASSOC);
+        $pixel_array = [];
+
+        foreach ($pixel_data as $pixel) {
+            $pixel_array[] = new \App\PoopWall\Pixel($pixel);
         }
 
-        return $user_masyvas;
+        return $pixel_array;
     }
 
     public function deleteAll() {
-        if ($this->db->deleteRows($this->table_name)) {
-            $this->db->save();
-            return true;
-        }
-    }
+        $deleteAll = strtr('DELETE FROM @db.@table', [
+            '@db' => \Core\Database\SQLBuilder::column(DB_SCHEMA),
+            '@table' => \Core\Database\SQLBuilder::column(DB_TABLE)
+        ]);
 
-    public function getCount() {
-        $get_count = $this->db->getCount($this->table_name);
-        if ($get_count) {
-            return $get_count;
-        }
-
-        return 0;
-    }
-    
-    public function exists(\Core\User\User $user){
-        return $this->db->rowExists($this->table_name, $user->getEmail());
+        $query = $this->pdo->query($deleteAll);
+        $query->execute();
     }
 
 }

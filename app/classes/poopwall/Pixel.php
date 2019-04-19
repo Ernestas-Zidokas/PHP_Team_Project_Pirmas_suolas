@@ -2,70 +2,75 @@
 
 namespace App\PoopWall;
 
-Class Pixel {
+class Pixel {
 
-    const ACCOUNT_TYPE_USER = 1;
-    const ACCOUNT_TYPE_ADMIN = 0;
+    const COLOUR_ORANGE = 'orange';
+    const COLOUR_BLACK = 'black';
+    const COLOUR_YELLOW = 'yellow';
+    const COLOUR_BLUE = 'blue';
+    const COLOUR_RED = 'red';
+    
+    public $data;
 
     public function __construct($data = null) {
         if (!$data) {
             $this->data = [
-                'username' => null,
-                'email' => null,
-                'full_name' => null,
-                'age' => null,
-                'gender' => null,
-                'orientation' => null,
-                'photo' => null,
-                'account_type' => null,
-                'is_active' => null,
-                'password' => null
+                'x' => null,
+                'y' => null,
+                'color' => null,
             ];
         } else {
             $this->setData($data);
         }
     }
 
-    public function getAccountType(): int {
-        return $this->data['account_type'];
+    public function getXCoordinate() {
+        return $this->data['x'];
     }
 
-    public function getIsActive(): bool {
+    public function getYCoordinate() {
         return $this->data['is_active'];
     }
 
-    public function getPassword(): string {
-        return $this->data['password'];
+    public function getColor() {
+        return $this->data['color'];
     }
 
-    public function setAccountType(int $type) {
-        if (in_array($type, [self::ACCOUNT_TYPE_ADMIN, self::ACCOUNT_TYPE_USER])) {
-            $this->data['account_type'] = $type;
+    public function setColor(string $color) {
+        if (in_array($color, [self::COLOUR_BLACK, self::COLOUR_BLUE, self::COLOUR_ORANGE,
+                    self::COLOUR_RED, self::COLOUR_YELLOW])) {
+            $this->data['color'] = $color;
 
             return true;
         }
     }
 
-    public static function getAccountTypeOptions() {
+    public static function getColorOptions() {
         return [
-            self::ACCOUNT_TYPE_USER => 'User',
-            self::ACCOUNT_TYPE_ADMIN => 'Admin'
+            self::COLOUR_BLACK => 'Black',
+            self::COLOUR_BLUE => 'Blue',
+            self::COLOUR_ORANGE => 'Orange',
+            self::COLOUR_RED => 'Red',
+            self::COLOUR_YELLOW => 'Yellow'
         ];
     }
 
-    public function setIsActive(bool $active) {
-        $this->data['is_active'] = $active;
+    public function setX(int $x) {
+        $this->data['x'] = $x;
     }
 
-    public function setPassword(string $password) {
-        $this->data['password'] = $password;
+    public function setY(int $y) {
+        $this->data['y'] = $y;
     }
 
     public function setData(array $data) {
-        parent::setData($data);
-        $this->setIsActive($data['is_active'] ?? null);
-        $this->setAccountType($data['account_type'] ?? null);
-        $this->setPassword($data['password'] ?? '');
+        $this->setX($data['x'] ?? null);
+        $this->setY($data['y'] ?? null);
+        $this->setColor($data['color'] ?? '');
+    }
+
+    public function getData() {
+        return $this->data;
     }
 
 }
