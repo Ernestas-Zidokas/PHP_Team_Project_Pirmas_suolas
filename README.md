@@ -1,7 +1,7 @@
 ﻿# Pirmas suolas
 ## MES =>
-![GitHub Logo](images/hand.gif)
+![GitHub Logo](public_html/images/hand.gif)
 ## JUS =>
-[GitHub Logo](images/tiny.gif)
+![GitHub Logo](public_html/images/tiny.gif)
 
 

@@ -73,7 +73,7 @@ if (!empty($_POST)) {
 <html>
     <head>
         <title>Add Pixel</title>
-        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
         <?php require 'objects/navigation.php'; ?>

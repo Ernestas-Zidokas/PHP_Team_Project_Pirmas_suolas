@@ -8,7 +8,7 @@ $model_pixel = new \App\PoopWall\Model\ModelPixel($connection, DB_TABLE);
 <html>
     <head>
         <title>POOPWALL</title>
-        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
         <?php require 'objects/navigation.php'; ?>
