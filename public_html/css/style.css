@@ -1,0 +1,43 @@
+.container {
+    display: flex;
+    justify-content: center; 
+}
+
+.forma {
+    border: 1px solid black;
+    text-align: center;
+    padding: 10px;
+}
+
+form input {
+    display: block;
+    margin: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+form select {
+    display: block;
+    margin: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wall {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    background-color: blanchedalmond;
+}
+
+.pixel {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+}
+
+.nav ul li a {
+    text-decoration: none;
+    
+}
